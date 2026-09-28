@@ -1,4 +1,13 @@
-venv/
-.env
-__pycache__/
-.pytest_cache/
+
+node_modules/
+dist/
+.env.*
+*.pem
+*.key
+*.db
+*.sqlite
+*.sqlite3
+*.sql
+*.log
+uploads/
+.venv/
