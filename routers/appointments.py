@@ -323,7 +323,7 @@ def create_appointment(
     if existing_user.role not in ["doctor", "pa"]:
         raise HTTPException(
             status_code=400,
-            detail="Appointments can only be assigned to doctors or PAs"
+            detail="Appointments can only be assigned by doctors or PAs"
         )
 
     appointment_datetime = datetime.combine(
@@ -380,12 +380,12 @@ def create_appointment(
 
         return new_appointment
 
-    except SQLAlchemyError:
+    except SQLAlchemyError as e:
         db.rollback()
 
         raise HTTPException(
             status_code=500,
-            detail="Database error occurred"
+            detail=str(e)
         )
 
 

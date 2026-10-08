@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ConfigDict, Field,model_validator
 from datetime import date,time
-from typing import Literal
+from typing import Literal,Optional       
 PatientStatus = Literal["active", "inactive", "archived"]
 AppointmentStatus = Literal["booked", "completed", "cancelled", "updated"]
 Userroles=Literal["admin", "doctor", "owner","pa"]
@@ -42,7 +42,13 @@ class AppointmentCreate(BaseModel):
     status: AppointmentStatus
     service_type: str | None = Field(default=None, min_length=1, max_length=100)
     fee: float | None = Field(default=None, ge=0)
-    payment_method: str | None = Field(default=None, min_length=1, max_length=50)
+
+    payment_method: Optional[Literal[
+        "cash",
+        "card",
+        "bank_transfer",
+        "online"
+    ]] = None
     dues: float | None = Field(default=None, ge=0)
 
     @model_validator(mode="after")
@@ -61,7 +67,12 @@ class AppointmentResponse(BaseModel):
     status: AppointmentStatus
     service_type: str | None = Field(default=None, min_length=1, max_length=100)
     fee: float | None = Field(default=None, ge=0)
-    payment_method:  str | None = Field(default=None, min_length=1, max_length=50)
+    payment_method: Optional[Literal[
+        "cash",
+        "card",
+        "bank_transfer",
+        "online"
+    ]] = None
     dues: float | None = Field(default=None, ge=0)
 
     model_config = ConfigDict(from_attributes=True)
@@ -71,7 +82,12 @@ class AppointmentUpdate(BaseModel):
     status: AppointmentStatus
     service_type: str | None = Field(default=None, min_length=1, max_length=100)
     fee: float | None = Field(default=None, ge=0)
-    payment_method:  str | None = Field(default=None, min_length=1, max_length=50)
+    payment_method: Optional[Literal[
+        "cash",
+        "card",
+        "bank_transfer",
+        "online"
+    ]] = None
     dues: float | None = Field(default=None, ge=0)
     @model_validator(mode="after")
     def validate_dues(self):
